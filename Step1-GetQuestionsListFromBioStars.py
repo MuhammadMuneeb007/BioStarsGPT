@@ -147,8 +147,6 @@ if __name__ == "__main__":
     
     print("Scraping Biostars questions using multiprocessing...")
     total_pages = 2418
-    #total_pages = 100
-    
     processes = 5
     
     questions = scrape_biostars_questions_multiprocessing(total_pages, processes)

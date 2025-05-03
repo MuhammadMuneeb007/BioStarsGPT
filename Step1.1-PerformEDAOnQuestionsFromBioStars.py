@@ -343,13 +343,13 @@ def create_comprehensive_plot(df, tag_analysis, text_analysis, numerical_analysi
         cbar_kws={"shrink": 0.8, "label": "Correlation Coefficient"}
     )
     
-    ax6.set_title('Correlation Between Metrics', fontweight='bold', pad=15)
+    ax6.set_title('Correlation Between Votes, Replies and Views', fontweight='bold', pad=15)
     
     # === Removed plots 4 (Distribution of Question Views) and 8 (Key Dataset Statistics) ===
     
     # Create title with date information
     plt.suptitle(
-        'Exploratory Data Analysis of BioStars Questions',
+        'Analysis of BioStars Questions',
         fontsize=24, 
         y=0.98, 
         fontweight='bold',
