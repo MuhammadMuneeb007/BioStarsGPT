@@ -2,7 +2,7 @@
 
 This project fine-tunes several large language models (LLMs) on posts from the [Biostars forum](https://www.biostars.org/), a community-driven Q&A platform focused on bioinformatics.
 
-It includes:
+Project's features include:
 
 - Downloading the posts from Biostars
 - Extracting content from images embedded in posts
@@ -14,18 +14,15 @@ It includes:
 
 ## Why Fine-Tune on Bioinformatics Data?
 
-Fine-tuning on bioinformatics data is essential for creating models that understand the unique language, structure, and challenges of the domain. Unlike general-purpose datasets, bioinformatics data includes specialized terminology, workflows, and context-specific insights that are critical for accurate interpretation.
+Bioinformatics data is rich in specialized terminology and workflows but is often sensitive and cannot leave secure environments. Fine-tuning LLMs locally ensures privacy while enabling domain-specific understanding.
 
-Additionally, bioinformatics data—such as patient records or unpublished research—is sensitive and must remain private. This pipeline enables localized model fine-tuning, ensuring data does not need to leave secure environments while still benefiting from AI capabilities.
+Using Biostars as a case study, this pipeline demonstrates how to:
 
-By fine-tuning LLMs on bioinformatics datasets like Biostars, we aim to:
+- Extract expert knowledge from community forums
+- Enable secure, local model training
+- Improve domain-specific comprehension and performance
 
-- Equip models with domain-specific knowledge
-- Improve accuracy in understanding scientific questions and responses
-- Support researchers in data analysis, tool selection, and methodology
-- Reduce reliance on external or generalized AI models that may lack domain insight
-
-Biostars is chosen as a use case to validate the pipeline designed for fine-tuning large language models. The proposed pipeline facilitates structured data curation and fine-tuning, particularly useful in domains where data privacy is crucial. In bioinformatics, patient-related or research-sensitive data is often private and should not be uploaded to external servers. While our implementation demonstrates the use of Google's AI for efficiency, the question-answer generation step can be performed using locally-hosted open-source models (such as Llama-3, Mistral, or Phi-4), ensuring complete data privacy throughout the entire pipeline. This flexibility allows institutions to implement the full workflow without compromising data confidentiality, even during the initial data curation phase.
+While Google’s AI tools are used for initial QA generation, the pipeline supports alternatives like Llama-3, Mistral, or Phi-4 for fully local, private implementations.
 
 ## Features of the Project
 
@@ -33,7 +30,7 @@ Biostars is chosen as a use case to validate the pipeline designed for fine-tuni
 - Bioinformatics Knowledge Capture
 - Quality Evaluation Framework
 - Innovation in Data Processing
-- Dataset Contribution
+- [Dataset Contribution](https://huggingface.co/datasets/muhammadmuneeb007/BioStarsDataset)
 - Comparative Model Analysis
 - Hyperparameter Optimization
 - Educational Value
