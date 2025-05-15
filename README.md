@@ -1,17 +1,13 @@
 # A Pipeline to Fine-Tune LLM for Bioinformatics Dataset: Use Case Biostars Questions & Answers Forum
 
+![BioStarGPT Pipeline Overview](Poster1.jpg)
+![BioStarGPT Pipeline Overview](Poster2.jpg)
+
 ## Download Data
 
 You can download the BioStarsDataset from Hugging Face:
 
 [https://huggingface.co/datasets/muhammadmuneeb007/BioStarsDataset](https://huggingface.co/datasets/muhammadmuneeb007/BioStarsDataset)
-
-```
-from datasets import load_dataset
-
-# Login using e.g. `huggingface-cli login` to access this dataset
-ds = load_dataset("muhammadmuneeb007/BioStarsDataset")
-```
 
 ## Background
 
