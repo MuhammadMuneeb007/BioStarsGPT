@@ -383,7 +383,7 @@ For each question directory, produces `Questions/[id]/text_similarity_analysis.c
 | sentence_transformer_similarity | Similarity using sentence transformers                        |
 | word_embedding_similarity       | Similarity using word embeddings                              |
 
-Sample output row:
+**Sample output row:**
 
 | Content Type  | TF-IDF Similarity | SpaCy Similarity | Jaccard Similarity | Entity Overlap | Entity Label Match | Key Concepts Count | Missing Concepts Count | Concept Coverage (%) | Sentence Count | Explanation Coverage (%) | Contradictions Count | BERTScore F1 | BERTScore Precision | BERTScore Recall |
 | :------------ | ----------------: | ---------------: | -----------------: | -------------: | -----------------: | -----------------: | ---------------------: | -------------------: | -------------: | -----------------------: | -------------------: | -----------: | ------------------: | ---------------: |
@@ -409,22 +409,25 @@ Average metrics for the first 10,000 questions:
 | Explanation 1 |          0.422718 |         0.838561 |           0.162532 |       0.089491 |           0.753172 |             19.990 |                  5.653 |               71.720 |          5.535 |                   99.993 |                    0 |     0.837863 |            0.823113 |         0.859673 |
 | Explanation 2 |          0.478802 |         0.888521 |            0.17425 |       0.130355 |           0.827164 |             19.888 |                  4.668 |               76.537 |         11.912 |                   99.990 |                    0 |     0.844111 |            0.832371 |         0.872336 |
 
+## Step 5: Merge All Question/Explanation Pairs
+
 ### Script: `Step5-MergeQuestions.py`
 
-Merge all questions in Questions/\*
+This script consolidates all individual question and explanation pairs from the `Questions/*` directories into a single dataset file named `Allquestions.json`.
 
-and save it as Allquestions.json
-Allquestions.json
-
-#### Usage:
+#### Usage
 
 ```bash
 python Step5-MergeQuestions.py
 ```
 
+#### Output
+
+- `Allquestions.json`: Contains all merged question/explanation pairs for downstream analysis and processing.
+
 ### Script: `Step5.1-FindDatasetDiversity.py`
 
-This script performs a comprehensive analysis of explanation texts using natural language processing techniques to identify patterns and themes. It loads JSON data containing explanations, extracts and combines texts from both "Explanation1" and "Explanation2" fields, then creates TF-IDF embeddings to represent the textual content numerically. The script determines the optimal number of clusters using silhouette scores, applies K-means clustering to group similar explanations, and reduces dimensionality with t-SNE for visualization. It generates publication-quality plots showing clusters with descriptive labels based on top terms, creates word clouds for each cluster, and performs detailed analysis of cluster characteristics including size, composition, and representative terms. The entire process is designed to identify thematic groupings within explanation data, with output saved to a "ClusterAnalysis" directory for further examination. The code implements various optimizations for handling large datasets, including PCA dimensionality reduction before t-SNE and adaptive parameters based on dataset size.
+This script performs a comprehensive analysis of explanation texts using natural language processing techniques to identify patterns and themes. It loads JSON data containing explanations, extracts and combines texts from both "Explanation1" and "Explanation2" fields, then creates TF-IDF embeddings to represent the textual content numerically. The script determines the optimal number of clusters using silhouette scores, applies K-means clustering to group similar explanations, and reduces dimensionality with t-SNE for visualization. It generates plots showing clusters with descriptive labels based on top terms, creates word clouds for each cluster, and performs detailed analysis of cluster characteristics including size, composition, and representative terms. The entire process is designed to identify thematic groupings within explanation data, with output saved to a "ClusterAnalysis" directory for further examination. The code implements various optimizations for handling large datasets, including PCA dimensionality reduction before t-SNE and adaptive parameters based on dataset size.
 
 #### Usage:
 
@@ -436,7 +439,7 @@ python Step5.1-FindDatasetDiversity.py
 
 ### Script: `Step5.2-EDA_Questions_Answers.py`
 
-This script performs comprehensive exploratory data analysis of a question-answer dataset with a focus on publication-quality visualizations. It loads question data from JSON files, analyzes answer distributions (YES/NO responses), and examines tag frequencies associated with each answer type. The script generates multiple visualizations including answer distribution charts, tag frequency plots, question and explanation length distributions, and word clouds to visualize common terms. It calculates detailed vocabulary metrics (Type-Token Ratio, Yule's K, hapax legomena) and creates sophisticated visualizations like radar charts for content richness analysis and Zipf's law plots to examine vocabulary distribution patterns. The script also analyzes vocabulary overlap between questions and explanations with custom visualizations, visualizes tag co-occurrences, and implements extensive text preprocessing to improve analysis quality. All visualizations use publication-quality styling with careful attention to typography, color schemes, and annotations, with results saved to a designated directory and metadata stored in an EDA.json file for further reference.
+This script performs comprehensive exploratory data analysis of a question-answer dataset with a focus on visualizations. It loads question data from JSON files, analyzes answer distributions (YES/NO responses), and examines tag frequencies associated with each answer type. The script generates multiple visualizations including answer distribution charts, tag frequency plots, question and explanation length distributions, and word clouds to visualize common terms. It calculates detailed vocabulary metrics (Type-Token Ratio, Yule's K, hapax legomena) and creates visualizations like radar charts for content richness analysis and Zipf's law plots to examine vocabulary distribution patterns. The script also analyzes vocabulary overlap between questions and explanations with custom visualizations, visualizes tag co-occurrences, and implements extensive text preprocessing to improve analysis quality. Results saved to a designated directory and metadata stored in an EDA.json file for further reference.
 
 #### Usage:
 
@@ -446,9 +449,11 @@ python Step5.2-EDA_Questions_Answers.py
 
 ![Analysis of Questions-Answers](Figure3-AnalysisOfQuestionsAnswers.png)
 
+## Step 6: Filter Questions Based on Answer Status
+
 ### Script: `Step6-FilterQuestions.py`
 
-This script analyzes text complexity of biological question/answer data to determine appropriate publication levels for different explanations. It processes a dataset ("Allquestions.json"), filtering entries to include only those with "YES" answers and explanations under 1048 tokens. For each explanation, it calculates multiple linguistic complexity metrics including readability scores (Flesch Reading Ease, Gunning Fog Index), lexical diversity (Type-Token Ratio), and sentence complexity measures. Using these features, the script performs K-means clustering to categorize explanations into five publication-level clusters ranging from "Elementary/Popular Blog" to "Expert/Scientific Journal." It implements parallel processing for efficiency when handling large datasets and generates publication-quality visualizations using principal component analysis to display the clusters in a 2D space. Throughout execution, the script maintains detailed progress tracking and saves intermediate results, with final outputs including complexity-annotated JSON data and publication level distribution statistics. This analysis helps determine the reading level and technical sophistication of biological explanations, providing insights for educational content development or model fine-tuning.
+It processes a dataset ("Allquestions.json"), filtering entries to include only those with "YES" answers and explanations under 1048 tokens. For each explanation, it calculates multiple linguistic complexity metrics including readability scores (Flesch Reading Ease, Gunning Fog Index), lexical diversity (Type-Token Ratio), and sentence complexity measures. Using these features, the script performs K-means clustering to categorize explanations into five publication-level clusters ranging from "Elementary/Popular Blog" to "Expert/Scientific Journal." It implements parallel processing for efficiency when handling large datasets and generates publication-quality visualizations using principal component analysis to display the clusters in a 2D space.
 
 #### Usage:
 
@@ -482,7 +487,7 @@ Complexity distribution:
 
 ### Script: `Step6.1-AnalysisOfQuestionAnswers.py`
 
-This script evaluates how well explanations in a biological question-answer dataset address their corresponding questions using natural language inference models. It loads preprocessed data containing question-explanation pairs and analyzes whether each explanation properly answers its question using transformer-based models like Meta's Llama 3.3, Microsoft's DeBERTa, or AllenAI's Longformer. The script implements sophisticated text processing, including chunking techniques for handling long texts that exceed model token limits, with overlapping segments to ensure comprehensive evaluation. It calculates entailment scores that indicate how well explanations address questions, aggregates statistics across the dataset (percentage of questions answered, average scores), and handles model-specific interpretation of classification outputs (binary vs. three-class prediction). The code incorporates optimizations for GPU acceleration and parallel processing, saving detailed analysis results as JSON files for further research. This evaluation provides critical insights into explanation quality and relevance for biological domain-specific question answering, with particular attention to technical content that may require specialized knowledge.
+This script evaluates how well explanations in a biological question-answer dataset address their corresponding questions using natural language inference models. It loads preprocessed data containing question-explanation pairs and analyzes whether each explanation properly answers its question using transformer-based models like Meta's Llama 3.3, Microsoft's DeBERTa, or AllenAI's Longformer. The script implements sophisticated text processing, including chunking techniques for handling long texts that exceed model token limits, with overlapping segments to ensure comprehensive evaluation. It calculates entailment scores that indicate how well explanations address questions, aggregates statistics across the dataset (percentage of questions answered, average scores), and handles model-specific interpretation of classification outputs (binary vs. three-class prediction).
 
 #### Usage:
 
@@ -515,9 +520,16 @@ Total questions answered: 9923 (100.00%)
 Entries with at least one answered question: 9923 (100.00%)
 ```
 
+## Step 7: Split data based on the clustering (CRITICAL)
+
+> **Note:**  
+> This step is critical due to the large dataset size—over 100,000 question-answer pairs. Running inference on the entire test set was computationally expensive (e.g., 1,000 questions took one day per model), so the test set was reduced to 100 questions for practical evaluation.
+
+> To address the high diversity in the data, we performed clustering and then split the dataset proportionally: samples for train, validation, and test sets were drawn from each cluster according to its size. Importantly, all related items (e.g., Question 1, Question 2, Explanation 1, Explanation 2) from the same post were kept together in the same split. This ensures that no related content appears across train, validation, or test sets, maintaining strict separation and preventing data leakage.
+
 ### Script: `Step7-SplitData.py`
 
-This script optimizes the semantic clustering and data splitting process for large biological question-answer datasets with memory-efficient techniques. It improves on the previous implementation by: (1) implementing batch processing and memory management throughout the pipeline, including explicit garbage collection and memory-optimized model parameters; (2) adding adaptive sampling for large datasets during UMAP dimensionality reduction and HDBSCAN clustering; (3) optimizing the visualization process with reduced resolution parameters and simplified plotting; (4) implementing more efficient diversity calculations with batched similarity computations; and (5) adding complexity distribution analysis across train/validation/test splits. The script maintains the core functionality of creating semantically balanced dataset splits while preserving question-pair relationships, but significantly reduces memory requirements and processing time through algorithmic optimizations such as adaptive n_neighbors parameters, sequential batch processing for JSONL output, and simplified visualization approaches that avoid memory-intensive density contours. These optimizations enable the pipeline to process much larger biological question-answer datasets on hardware with limited memory resources.
+This script optimizes the semantic clustering and data splitting process for large biological question-answer datasets with memory-efficient techniques. It improves on the previous implementation by: (1) implementing batch processing and memory management throughout the pipeline, including explicit garbage collection and memory-optimized model parameters; (2) adding adaptive sampling for large datasets during UMAP dimensionality reduction and HDBSCAN clustering; (3) optimizing the visualization process with reduced resolution parameters and simplified plotting; (4) implementing more efficient diversity calculations with batched similarity computations; and (5) adding complexity distribution analysis across train/validation/test splits. The script maintains the core functionality of creating semantically balanced dataset splits while preserving question-pair relationships.
 
 #### Usage:
 
@@ -542,38 +554,11 @@ python Step7-SplitData.py
 - `Validation_with_outliers.jsonl`: 10,001 items
 - `Test_with_outliers.jsonl`: 100 items
 
-### Script: `Step8-EvaluateTestLocalModels.py`
-
-This script implements a comprehensive framework for evaluating large language models on bioinformatics question-answering tasks. It loads biological question-answer pairs from JSONL files, processes them through different foundation models (including Llama-3, Phi-4, Qwen2.5, and Mistral), and evaluates generated explanations against reference answers using multiple complementary metrics. The evaluation employs a diverse array of assessment methods including lexical similarity metrics (BLEU, ROUGE, Jaccard, Levenshtein), semantic similarity measures (TF-IDF cosine similarity, spaCy vector similarity, Sentence-BERT embeddings), and advanced semantic coherence evaluations (Word Mover's Distance, entailment scoring). The script handles memory optimization through conditional loading of resource-intensive NLP components, implements batched processing for efficient evaluation, and produces publication-quality visualizations and structured CSV/JSON outputs. This enables systematic comparative analysis of model performance across different bioinformatics explanation generation tasks with detailed results saved in a standardized evaluation directory structure, allowing researchers to quantify both lexical fidelity and semantic alignment between model-generated and reference explanations.
-
-#### Usage:
-
-```bash
-python Step8-EvaluateTestLocalModels.py
-```
-
-#### Output:
-
-![Sementic distribution DataSplit](Figure4-DataSplit.png)
+## Step 8: Evaluate the Performance of the Local Unfine-Tuned Model on the Test Set
 
 ### Script: `Step8-EvaluateTestLocalModels.py` and `Step8-EvaluateTestGoogleAI.py`
 
-T
-This script implements a comprehensive framework for evaluating large language models on bioinformatics question-answering tasks. It loads biological question-answer pairs from JSONL files, processes them through different foundation models (including Llama-3, Phi-4, Qwen2.5, and Mistral), and evaluates generated explanations against reference answers using multiple complementary metrics. The evaluation employs a diverse array of assessment methods including lexical similarity metrics (BLEU, ROUGE, Jaccard, Levenshtein), semantic similarity measures (TF-IDF cosine similarity, spaCy vector similarity, Sentence-BERT embeddings), and advanced semantic coherence evaluations (Word Mover's Distance, entailment scoring). The script handles memory optimization through conditional loading of resource-intensive NLP components, implements batched processing for efficient evaluation, and produces publication-quality visualizations and structured CSV/JSON outputs. This enables systematic comparative analysis of model performance across different bioinformatics explanation generation tasks with detailed results saved in a standardized evaluation directory structure, allowing researchers to quantify both lexical fidelity and semantic alignment between model-generated and reference explanations.
-
-#### Usage:
-
-```bash
-python Step8-EvaluateTestLocalModels.py
-```
-
-#### Output:
-
-![Sementic distribution DataSplit](Figure4-DataSplit.png)
-
-### Script: `Step8-EvaluateTestLocalModels.py` and `Step8-EvaluateTestGoogleAI.py`
-
-his script implements a comprehensive framework for evaluating large language models on bioinformatics question-answering tasks. It loads biological question-answer pairs from JSONL files, processes them through different foundation models (including Llama-3, Phi-4, Qwen2.5, and Mistral), and evaluates generated explanations against reference answers using multiple complementary metrics. The evaluation employs a diverse array of assessment methods including lexical similarity metrics (BLEU, ROUGE, Jaccard, Levenshtein), semantic similarity measures (TF-IDF cosine similarity, spaCy vector similarity, Sentence-BERT embeddings), and advanced semantic coherence evaluations (Word Mover's Distance, entailment scoring). The script handles memory optimization through conditional loading of resource-intensive NLP components, implements batched processing for efficient evaluation, and produces publication-quality visualizations and structured CSV/JSON outputs. This enables systematic comparative analysis of model performance across different bioinformatics explanation generation tasks with detailed results saved in a standardized evaluation directory structure, allowing researchers to quantify both lexical fidelity and semantic alignment between model-generated and reference explanations.
+This script implements a comprehensive framework for evaluating large language models on bioinformatics question-answering tasks. It loads biological question-answer pairs from JSONL files, processes them through different foundation models (including Llama-3, Phi-4, Qwen2.5, and Mistral), and evaluates generated explanations against reference answers using multiple complementary metrics. The evaluation employs a diverse array of assessment methods including lexical similarity metrics (BLEU, ROUGE, Jaccard, Levenshtein), semantic similarity measures (TF-IDF cosine similarity, spaCy vector similarity, Sentence-BERT embeddings), and advanced semantic coherence evaluations (Word Mover's Distance, entailment scoring).
 
 #### Usage:
 
@@ -583,7 +568,11 @@ python Step8-EvaluateTestGoogleAI.py
 python Step8.1-MergeResults.py
 ```
 
-#### Output:
+#### Output1:
+
+![Sementic distribution DataSplit](Figure4-DataSplit.png)
+
+#### Output2:
 
 | Metric                   | gemini-2.5-flash-preview-04-17 | unsloth_Llama-3.2-3B-Instruct | unsloth_Phi-4 | unsloth_Qwen2.5-7B | unsloth_mistral-7b-instruct-v0.3-bnb-4bit |
 | ------------------------ | ------------------------------ | ----------------------------- | ------------- | ------------------ | ----------------------------------------- |
@@ -611,25 +600,24 @@ python Step8.1-MergeResults.py
 
 ### Script: `Step8.2-FindOptimalParametersForLLM.py`
 
-This script implements a comprehensive analyzer for biological question-answer datasets with sophisticated statistical and natural language processing capabilities. It loads JSONL-formatted prompt-completion pairs, analyzes their linguistic characteristics, and recommends optimal hyperparameters for fine-tuning large language models. The implementation includes several advanced features: adaptive model selection based on dataset complexity; automated topic modeling using either NMF or LDA depending on available libraries; semantic diversity measurement using transformer embeddings with confidence intervals; code presence detection through pattern matching; and publication-quality visualizations of token distributions, topics, and complexity metrics. The script handles memory constraints gracefully through conditional loading of resource-intensive libraries and includes built-in fallback mechanisms when advanced NLP libraries aren't available. Results are presented through both interactive visualizations and a comprehensive Markdown report that includes detailed dataset statistics, content analysis, and model recommendations. The hyperparameter recommendations are specifically tailored to the dataset's unique characteristics, including appropriate sequence length, learning rate, and LoRA parameters optimized for the detected complexity level.
+This script provides an in-depth analysis of biological question-answer datasets, leveraging advanced statistical and NLP techniques. It processes JSONL prompt-completion pairs to assess linguistic features, dataset complexity, and semantic diversity. The analyzer adaptively selects topic modeling methods (NMF or LDA), measures diversity using transformer embeddings, detects code presence, and generates publication-quality visualizations. It recommends optimal fine-tuning hyperparameters—including model type, sequence length, learning rate, and LoRA settings—based on dataset characteristics. The script is robust to memory constraints and missing libraries, and outputs both interactive plots and a detailed Markdown report with actionable model training recommendations.
 
 #### Usage:
 
 ```bash
-python Step8-EvaluateTestLocalModels.py
-python Step8-EvaluateTestGoogleAI.py
-python Step8.1-MergeResults.py
+Step8.2-FindOptimalParametersForLLM.py
 ```
 
 #### Output:
 
-# Analysis Report for Train_with_outliers.jsonl
+[View PDF](Report.pdf)
 
-## 1. Executive Summary
+```
+##### 1. Summary
 
 This report presents a comprehensive analysis of a question-answer dataset containing **144137** pairs. The dataset exhibits **high** complexity with a diversity score of **0.843** (95% CI: 0.841-0.845). Based on content and structural analysis, we recommend fine-tuning a **meta-llama/Llama-3-70b-instruct** model with the optimized hyperparameters detailed in Section 5.
 
-## 2. Dataset Statistics
+##### 2. Dataset Statistics
 
 | Metric                  | Questions | Explanations |
 | ----------------------- | --------- | ------------ |
@@ -641,16 +629,16 @@ This report presents a comprehensive analysis of a question-answer dataset conta
 
 The dataset contains a total of approximately **39,266,954** tokens. The distribution of tokens suggests a high-complexity dataset that requires a sequence length of at least **2048** tokens to accommodate the longest samples.
 
-## 3. Content Analysis
+#### 3. Content Analysis
 
-### 3.1 Topic Distribution
+##### 3.1 Topic Distribution
 
 The semantic analysis identified **2** distinct topics in the questions:
 
 - **Topic_1**: file (19585.419), using (14514.607), files (14161.968), seq (13726.935), data (12439.254)
 - **Topic_2**: using (12160.530), data (12017.339), gene (11786.735), genome (8931.855), sequences (7328.517)
 
-### 3.2 Complexity Assessment
+##### 3.2 Complexity Assessment
 
 The dataset complexity was assessed as **High** with a complexity score of **12.61**. This assessment is based on multiple factors:
 
@@ -661,14 +649,14 @@ The dataset complexity was assessed as **High** with a complexity score of **12.
 
 - Topic model perplexity: 471.34
 
-## 4. Training Data Recommendations
+#### 4. Training Data Recommendations
 
 Based on the dataset characteristics, we recommend the following data split:
 
 - Training samples: 115309 (79% of dataset)
 - Testing samples: 28827 (19% of dataset)
 
-## 5. Hyperparameter Recommendations
+#### 5. Hyperparameter Recommendations
 
 For optimal fine-tuning results, we recommend the following hyperparameters:
 
@@ -690,7 +678,7 @@ For generation during evaluation and inference, we recommend:
 - Top-p (nucleus sampling): 0.92
 - Minimum-p: 0.1
 
-## 6. Visualization Summary
+#### 6. Visualization Summary
 
 This analysis includes the following visualizations (available in the 'plots' directory):
 
@@ -700,25 +688,148 @@ This analysis includes the following visualizations (available in the 'plots' di
 4. Key terms wordcloud
 5. Summary dashboard of dataset characteristics
 
-## 7. Conclusion
+#### 7. Conclusion
 
 This dataset demonstrates high complexity with 2 distinct topics. The recommended fine-tuning approach with a Llama-3-70b-instruct model and optimized parameters should yield strong results in capturing the question-answer patterns present in the data.
+```
+
+> **Note:**  
+> The code used to generate this report is designed to provide an initial overview of dataset complexity. It is important to select pipeline components and model architectures based on a careful examination of your data. For instance, during experimentation, we observed that the loss function initially decreased but later increased when using certain models—this was due to the high prevalence of code in explanations, which some models began to ignore after several epochs. As a result, models such as Qwen and Llama 3.2 were chosen for their ability to better handle code-rich content.
 
 ---
 
-### Script: `Step9.1-FinetuneMistralModel.py`
+### Script: `Step9.2-FinetuneQwenModel.py`
 
 THis script finetunes the model. Make sure to update the hyperparamters in the script.
 
-This script implements an end-to-end fine-tuning pipeline for the Qwen2.5-7B language model on biological question-answer pairs using the Unsloth library. The implementation includes several sophisticated components: efficient parameter-efficient fine-tuning with LoRA adapters targeting specific transformer modules; comprehensive evaluation metrics (BLEU, ROUGE, perplexity) calculated after each epoch; multiple callbacks for monitoring training dynamics (early stopping, loss logging, gradient monitoring); and publication-quality visualization generation. The script handles the entire workflow from data loading to model deployment, with particular attention to memory optimization through gradient accumulation, mixed-precision training, and 4-bit quantization. It formats prompts using the Alpaca instruction template appropriate for Qwen models and implements thorough evaluation procedures with detailed result logging. The code also includes advanced training techniques like learning rate decay between epochs and efficient checkpoint management, concluding with multiple export options for deployment scenarios including merged model saving and GGUF conversion for different inference environments.
+This script implements an end-to-end fine-tuning pipeline for the Qwen2.5-7B language model on biological question-answer pairs using the Unsloth library. The implementation includes several sophisticated components: efficient parameter-efficient fine-tuning with LoRA adapters targeting specific transformer modules; comprehensive evaluation metrics (BLEU, ROUGE, perplexity) calculated after each epoch; multiple callbacks for monitoring training dynamics (early stopping, loss logging, gradient monitoring). The script handles the entire workflow from data loading to model deployment, with particular attention to memory optimization through gradient accumulation, mixed-precision training, and 4-bit quantization.
 
-#### Usage:
+> **Note:**
+>
+> - Modify the sizes of the training, validation, and test sets in the script as needed for your experiment.
+> - Adjust the hyperparameters (such as learning rate, batch size, epochs, etc.) in the script to optimize model performance.
+> - Monitor the training process to ensure that the training loss is decreasing over time, indicating effective learning.
+
+#### Usage
 
 ```bash
-python Step9.1-FinetuneMistralModel.py
-Step9.1-FinetuneMistralModel.py
-Step9.2-FinetuneQwenModel.py
-Step9.3-FinetuneLlama3.2.py
-Step9.4-FinetunePhiModel.py
-Step9.5-FinetuneGemmaModel.py
+python Step9.2-FinetuneQwenModel.py
+python Step9.3-FinetuneLlama3.2.py
+python Step9.4-FinetunePhiModel.py
+python Step9.5-FinetuneGemmaModel.py
 ```
+
+## Step 10: Compare the Performance of the Fine-Tuned Model on the Test Set
+
+### Script: `Step10-EvaluateResponse.py`
+
+This script provides a comprehensive framework for evaluating the similarity between reference and generated responses from natural language generation models. It integrates a wide range of metrics covering lexical, semantic, and structural aspects, including:
+
+- **Exact Match**
+- **Levenshtein Similarity**
+- **Jaccard Similarity**
+- **TF-IDF Cosine Similarity**
+- **ROUGE-1, ROUGE-2, ROUGE-L**
+- **BLEU-1, BLEU-4**
+- **METEOR**
+- **spaCy Similarity**
+- **Sentence-BERT (SBERT) Similarity**
+- **Word Mover's Distance (WMD)**
+- **Entailment Score**
+
+The script distinguishes between responses containing code blocks and standard text, enabling targeted analysis for different content types. It organizes results by training epochs and generates formatted tables for comparative evaluation of model performance across development iterations.
+
+#### Usage
+
+```bash
+python Step10-EvaluateResponse.py
+```
+
+Specify the directory containing model output files within the script.
+
+#### Output
+
+A table summarizing evaluation metrics per epoch, for example:
+
+| Epoch | Exact Match | Levenshtein Sim | Jaccard Sim | TF-IDF Cosine | ROUGE-1 | ROUGE-2 | ROUGE-L | BLEU-1 | BLEU-4 | METEOR | spaCy Sim | SBERT Sim | WMD Sim | Entailment |
+| ----- | ----------- | --------------- | ----------- | ------------- | ------- | ------- | ------- | ------ | ------ | ------ | --------- | --------- | ------- | ---------- |
+| 1     | 0.0000      | 0.2918          | 0.2521      | 0.4364        | 0.4337  | 0.1511  | 0.2437  | 0.3806 | 0.1050 | 0.2638 | 0.9558    | 0.7677    | 0.6180  | 0.1706     |
+| 2     | 0.0000      | 0.2969          | 0.2546      | 0.4406        | 0.4429  | 0.1555  | 0.2487  | 0.3867 | 0.1044 | 0.2744 | 0.9724    | 0.7725    | 0.6229  | 0.1684     |
+
+## Step 11: Merge the results for Fine-Tuned Model
+
+### Script: `Step11-MergeFinetunedResults.py`
+
+Get the latest epoch of the the model. and once that is done, You can comapre the results with the unfinedtuned version of the models Evaluated in Step 8.
+
+#### Usage
+
+```bash
+python Step11-MergeFinetunedResults.py
+```
+
+#### Output
+
+|     | Epoch | Exact Match | Levenshtein Sim | Jaccard Sim | TF-IDF Cosine |  ROUGE-1 |  ROUGE-2 |  ROUGE-L |   BLEU-1 |    BLEU-4 |   METEOR | spaCy Sim | SBERT Sim |  WMD Sim | Entailment | model Name       |
+| --: | ----: | ----------: | --------------: | ----------: | ------------: | -------: | -------: | -------: | -------: | --------: | -------: | --------: | --------: | -------: | ---------: | :--------------- |
+|   0 |     1 |           0 |        0.270343 |    0.215846 |       0.37175 | 0.380627 | 0.109764 | 0.209992 | 0.350372 | 0.0747871 | 0.225851 |  0.962963 |  0.727948 | 0.594904 |     0.1558 | outputs_llama3.3 |
+|   1 |     2 |           0 |        0.296928 |    0.254634 |      0.440632 | 0.442946 | 0.155453 | 0.248684 | 0.386733 |  0.104387 | 0.274407 |  0.972358 |  0.772522 | 0.622868 |   0.168419 | outputs_qwen     |
+
+## Final Comparison
+
+You can compare the performance of unfine-tuned models with fine-tuned models using any of the evaluation metrics and tables provided above. For example, review the metrics such as BLEU, ROUGE, TF-IDF Cosine Similarity, spaCy Similarity, SBERT Similarity, and Entailment Score to assess improvements after fine-tuning.
+
+| **Metric**                   | **Best Unfine-Tuned** | **LLaMA 3.2-3B (Fine-tuned)** | **Qwen2.5-7B (Fine-tuned)** | **LLaMA Gain/Loss** | **Qwen Gain/Loss** |
+| ---------------------------- | --------------------- | ----------------------------- | --------------------------- | ------------------- | ------------------ |
+| **Exact Match**              | 0.0000                | 1.0000                        | 2.0000                      | **+1.0000**         | **+2.0000**        |
+| **Levenshtein Similarity**   | 0.2473                | 0.2703                        | 0.2969                      | **+0.0230**         | **+0.0496**        |
+| **Jaccard Similarity**       | 0.1914                | 0.2158                        | 0.2546                      | **+0.0244**         | **+0.0632**        |
+| **TF-IDF Cosine Similarity** | 0.4250                | 0.3718                        | 0.4406                      | **–0.0532**         | **+0.0156**        |
+| **ROUGE-1**                  | 0.2627                | 0.3806                        | 0.4429                      | **+0.1179**         | **+0.1802**        |
+| **ROUGE-2**                  | 0.0691                | 0.1098                        | 0.1555                      | **+0.0407**         | **+0.0864**        |
+| **ROUGE-L**                  | 0.2392                | 0.2100                        | 0.2487                      | **–0.0292**         | **+0.0095**        |
+| **BLEU-1**                   | 0.2702                | 0.3504                        | 0.3867                      | **+0.0802**         | **+0.1165**        |
+| **BLEU-4**                   | 0.0427                | 0.0748                        | 0.1044                      | **+0.0321**         | **+0.0617**        |
+| **METEOR**                   | 0.2688                | 0.2259                        | 0.2744                      | **–0.0429**         | **+0.0056**        |
+| **spaCy Similarity**         | 0.9537                | 0.9630                        | 0.9724                      | **+0.0093**         | **+0.0187**        |
+| **SBERT Similarity**         | 0.7552                | 0.7279                        | 0.7725                      | **–0.0273**         | **+0.0173**        |
+| **WMD Similarity**           | 0.5734                | 0.5949                        | 0.6229                      | **+0.0215**         | **+0.0495**        |
+| **Entailment Score**         | 0.5389                | 0.1558                        | 0.1684                      | **–0.3831**         | **–0.3705**        |
+
+### Loss
+
+Below are the output visualizations for each fine-tuned model:
+
+| Model            | Output Visualization                         |
+| ---------------- | -------------------------------------------- |
+| **LLaMA 3.2-3B** | ![LLaMA 3.2-3B Output](outputs_llama3.3.png) |
+| **Qwen2.5-7B**   | ![Qwen2.5-7B Output](outputs_qwen.png)       |
+| **Phi-4**        | ![Phi-4 Output](outputs_phi.png)             |
+| **Gemma**        | ![Gemma Output](outputs_gemma.png)           |
+
+## Final Notes
+
+This completes the pipeline to fine-tune models for bioinformatics datasets. Please interpret the results carefully. The experiments were conducted on an NVIDIA H100 PCIe GPU (1 GPU, 79.179 GB memory) running Linux, with Torch 2.6.0+cu124, CUDA 12.4, and Triton 3.2.0. Bfloat16 was enabled.
+
+You can use a GPU with 16GB memory for a limited number of Llama 3.2 or Qwen model runs.
+
+**Model recommendations:**
+
+- **Qwen** and **Mistral**: Well-suited for chat and code-based tasks.
+- **Llama 3.2**: Best for chat-based tasks.
+
+If you encounter any issues or have questions about the code, please feel free to reach out.
+
+---
+
+## Author Information
+
+- **Name**: Muhammad Muneeb
+- **Affiliation**: The University of Queensland
+- **Email**: [m.muneeb@uq.edu.au](mailto:m.muneeb@uq.edu.au)
+- **Gmail**: [muneebsiddique007@gmail.com](mailto:muneebsiddique007@gmail.com)
+- **GitHub**: [GitHub Profile](https://github.com/MuhammadMuneeb007/)
+- **Google Scholar**: [Google Scholar](https://scholar.google.com/citations?hl=en&user=X0xdltIAAAAJ&view_op=list_works&sortby=pubdate)
+- **ResearchGate**: [ResearchGate Profile](https://www.researchgate.net/profile/Muhammad-Muneeb-5)
+- **Supervisor**: [David Ascher](https://scmb.uq.edu.au/profile/8654/david-ascher)
+- **Group Webpage**: [BioSig Lab](https://biosig.lab.uq.edu.au/)
