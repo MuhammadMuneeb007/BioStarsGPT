@@ -6,6 +6,13 @@ You can download the BioStarsDataset from Hugging Face:
 
 [https://huggingface.co/datasets/muhammadmuneeb007/BioStarsDataset](https://huggingface.co/datasets/muhammadmuneeb007/BioStarsDataset)
 
+```
+from datasets import load_dataset
+
+# Login using e.g. `huggingface-cli login` to access this dataset
+ds = load_dataset("muhammadmuneeb007/BioStarsDataset")
+```
+
 ## Background
 
 This project fine-tunes several large language models (LLMs) on posts from the [Biostars forum](https://www.biostars.org/), a community-driven Q&A platform focused on bioinformatics.
