@@ -632,11 +632,11 @@ def save_results(data: List[Dict[str, Any]], predictions: List[str], metrics: Di
 def main():
     # Configuration - Define available models with improved selection
     available_models = {
-        "1": {"name": "gemini-2.5-flash-preview-04-17", "api_key": "AIzaSyChSJsdWELdYYIo_5MJhIrhvntZJZD-Rds"},
-        "2": {"name": "gemini-2.5-flash", "api_key": "AIzaSyAViyUOJGVIWHoAtvb3f_DMmWToI4cwMPY"},
-        "3": {"name": "gemini-2.0-flash", "api_key": "AIzaSyCI_636zvX74HNHufFQnL2XqXkuTaABGgY"},
-        "4": {"name": "gemini-1.5-flash", "api_key": "AIzaSyC6X9msRKZfocmKhzbAUkNub3sLQl8i0Zo"},
-        "5": {"name": "gemini-2.5-pro", "api_key": "AIzaSyChSJsdWELdYYIo_5MJhIrhvntZJZD-Rds"}
+        "1": {"name": "gemini-2.5-flash-preview-04-17", "api_key": "-Rds"},
+        "2": {"name": "gemini-2.5-flash", "api_key": ""},
+        "3": {"name": "gemini-2.0-flash", "api_key": ""},
+        "4": {"name": "gemini-1.5-flash", "api_key": ""},
+        "5": {"name": "gemini-2.5-pro", "api_key": "-Rds"}
     }
     
     # Display available models
