@@ -790,22 +790,24 @@ python Step11-MergeFinetunedResults.py
 
 You can compare the performance of unfine-tuned models with fine-tuned models using any of the evaluation metrics and tables provided above. For example, review the metrics such as BLEU, ROUGE, TF-IDF Cosine Similarity, spaCy Similarity, SBERT Similarity, and Entailment Score to assess improvements after fine-tuning.
 
-| **Metric**                   | **Best Unfine-Tuned** | **LLaMA 3.2-3B (Fine-tuned)** | **Qwen2.5-7B (Fine-tuned)** | **LLaMA Gain/Loss** | **Qwen Gain/Loss** |
-| ---------------------------- | --------------------- | ----------------------------- | --------------------------- | ------------------- | ------------------ |
-| **Exact Match**              | 0.0000                | 1.0000                        | 2.0000                      | **+1.0000**         | **+2.0000**        |
-| **Levenshtein Similarity**   | 0.2473                | 0.2703                        | 0.2969                      | **+0.0230**         | **+0.0496**        |
-| **Jaccard Similarity**       | 0.1914                | 0.2158                        | 0.2546                      | **+0.0244**         | **+0.0632**        |
-| **TF-IDF Cosine Similarity** | 0.4250                | 0.3718                        | 0.4406                      | **–0.0532**         | **+0.0156**        |
-| **ROUGE-1**                  | 0.2627                | 0.3806                        | 0.4429                      | **+0.1179**         | **+0.1802**        |
-| **ROUGE-2**                  | 0.0691                | 0.1098                        | 0.1555                      | **+0.0407**         | **+0.0864**        |
-| **ROUGE-L**                  | 0.2392                | 0.2100                        | 0.2487                      | **–0.0292**         | **+0.0095**        |
-| **BLEU-1**                   | 0.2702                | 0.3504                        | 0.3867                      | **+0.0802**         | **+0.1165**        |
-| **BLEU-4**                   | 0.0427                | 0.0748                        | 0.1044                      | **+0.0321**         | **+0.0617**        |
-| **METEOR**                   | 0.2688                | 0.2259                        | 0.2744                      | **–0.0429**         | **+0.0056**        |
-| **spaCy Similarity**         | 0.9537                | 0.9630                        | 0.9724                      | **+0.0093**         | **+0.0187**        |
-| **SBERT Similarity**         | 0.7552                | 0.7279                        | 0.7725                      | **–0.0273**         | **+0.0173**        |
-| **WMD Similarity**           | 0.5734                | 0.5949                        | 0.6229                      | **+0.0215**         | **+0.0495**        |
-| **Entailment Score**         | 0.5389                | 0.1558                        | 0.1684                      | **–0.3831**         | **–0.3705**        |
+| Metric                 | Description                                            | **Best Unfine-Tuned** | LLaMA 3.2-3B (Fine-tuned) | Qwen2.5-7B (Fine-tuned) | Gemma (Fine-tuned) | LLaMA Gain/Loss | Qwen Gain/Loss | Gemma Gain/Loss |
+| ---------------------- | ------------------------------------------------------ | --------------------- | ------------------------- | ----------------------- | ------------------ | --------------- | -------------- | --------------- |
+| Exact Match            | % of predictions exactly matching reference            | **0.0000**            | 0.0000                    | 0.0000                  | 0.0000             | 0.0000 ❌        | 0.0000 ❌       | 0.0000 ❌        |
+| Levenshtein Similarity | Edit distance based similarity (higher = closer)       | **0.2473**            | 0.2828                    | **0.2972**              | 0.1712             | +0.0355 ✅       | +0.0499 ✅      | -0.0761 ❌       |
+| Jaccard Similarity     | Token overlap between prediction and reference         | **0.1914**            | 0.2356                    | **0.2581**              | 0.1919             | +0.0442 ✅       | +0.0667 ✅      | +0.0005 ✅       |
+| TF-IDF Cosine          | Cosine similarity of TF-IDF vector representations     | **0.4250**            | 0.4182                    | **0.4461**              | 0.3977             | -0.0068 ❌       | +0.0211 ✅      | -0.0273 ❌       |
+| ROUGE-1                | Overlap of unigrams (single words)                     | 0.2627                | 0.4217                    | **0.4437**              | 0.2459             | +0.1590 ✅       | +0.1810 ✅      | -0.0168 ❌       |
+| ROUGE-2                | Overlap of bigrams (two-word sequences)                | 0.0691                | 0.1275                    | **0.1564**              | 0.0786             | +0.0584 ✅       | +0.0873 ✅      | +0.0095 ✅       |
+| ROUGE-L                | Longest common subsequence similarity                  | **0.2392**            | 0.2260                    | **0.2497**              | 0.1330             | -0.0132 ❌       | +0.0105 ✅      | -0.1062 ❌       |
+| BLEU-1                 | Precision of unigrams in generated text                | 0.2702                | **0.3905**                | 0.3874                  | 0.1586             | +0.1203 ✅       | +0.1172 ✅      | -0.1116 ❌       |
+| BLEU-4                 | Precision of 4-grams in generated text                 | 0.0427                | 0.0907                    | **0.1042**              | 0.0356             | +0.0480 ✅       | +0.0615 ✅      | -0.0071 ❌       |
+| METEOR                 | Alignment measure considering synonyms and paraphrases | 0.2688                | 0.2685                    | 0.2735                  | **0.2737**         | -0.0003 ❌       | +0.0047 ✅      | +0.0049 ✅       |
+| spaCy Similarity       | Semantic similarity using spaCy word vectors           | 0.9537                | 0.9640                    | **0.9724**              | 0.9667             | +0.0103 ✅       | +0.0187 ✅      | +0.0130 ✅       |
+| SBERT Similarity       | Semantic similarity via Sentence-BERT embeddings       | 0.7552                | 0.7604                    | **0.7697**              | 0.7409             | +0.0052 ✅       | +0.0145 ✅      | -0.0143 ❌       |
+| WMD Similarity         | Semantic distance based on Word Mover’s Distance       | 0.5734                | 0.6117                    | **0.6250**              | 0.6014             | +0.0383 ✅       | +0.0516 ✅      | +0.0280 ✅       |
+| Entailment Score       | Likelihood prediction logically entails reference      | **0.5389**            | 0.1536                    | 0.1751                  | 0.0000             | -0.3853 ❌       | -0.3638 ❌      | -0.5389 ❌       |
+
+
 
 ### Loss
 
